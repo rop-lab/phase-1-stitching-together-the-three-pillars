@@ -11,28 +11,51 @@ const colorStates = {
 };
 
 // STEP 1: The line of code below is what lets JavaScript find the elements that
+ // STEP 1: The line of code below is what lets JavaScript find the elements that
 // we want to make clickable. Without JavaScript, clicking on these heart shapes
 // does nothing. Uncomment the code and refresh the demo page. 
 
-// const articleHearts = document.querySelectorAll(".like-glyph");
+const articleHearts = document.querySelectorAll(".like-glyph");
 
 function likeCallback(e) {
   const heart = e.target;
   mimicServerCall()
     .then(function(serverMessage){
-      // STEP 2: Uncomment the 3 lines after the alert.
-      // Here we're using Pillar 1 (DOM Manipulation) to update the screen and
-      // mimicking Pillar 3 (Server Communication) to only update the screen if
-      // the sending of information to the server succeeds.
-      alert("You notified the server!");
-      // alert(serverMessage);
-      // heart.innerText = glyphStates[heart.innerText];
-      // heart.style.color = colorStates[heart.style.color];
+      // STEP 2: If the server call is successful, update the heart appearance
+      heart.innerText = '♥'; // Change the heart text or update the class to show it's liked
+
+      // Optional: You can add additional visual effects or UI updates here
+
+      console.log(serverMessage);
     })
-    .catch(function(error) {
-      alert("Something went wrong!");
+    .catch(function(error){
+      // STEP 3: Handle errors if the server call fails
+      console.error('Error:', error);
+
+      // Optional: You can display an error message to the user or handle it in other ways
     });
 }
+
+// STEP 4: Add a click event listener to each heart element
+articleHearts.forEach(function(heart) {
+  heart.addEventListener('click', likeCallback);
+});
+
+// Example function to mimic a server call (replace with your actual server call)
+function mimicServerCall() {
+  return new Promise((resolve, reject) => {
+    // Simulating an asynchronous server call (you should replace this with your actual server logic)
+    setTimeout(() => {
+      const success = Math.random() > 0.5; // Simulating a successful response 50% of the time
+      if (success) {
+        resolve('Server call successful!');
+      } else {
+        reject('Server call failed!');
+      }
+    }, 1000); // Simulating a delay of 1 second
+  });
+}
+
 
 // STEP 3: In order for the call to the server and the update of the screen to
 // work, we need to add a click event listener to the elements we identified in
